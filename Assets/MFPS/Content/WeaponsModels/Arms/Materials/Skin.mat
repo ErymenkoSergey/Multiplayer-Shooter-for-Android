@@ -63,6 +63,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -87,3 +88,4 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0.77205884, g: 0.7054238, b: 0.56201345, a: 0}
     - _SpecColor: {r: 0.1397059, g: 0.1397059, b: 0.1397059, a: 1}
+  m_BuildTextureStacks: []

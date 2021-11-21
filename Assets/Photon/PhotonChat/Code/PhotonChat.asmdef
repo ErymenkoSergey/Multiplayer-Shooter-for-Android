@@ -1,12 +1,14 @@
 {
     "name": "PhotonChat",
+    "rootNamespace": "723f4992-e130-4fb7-b312-4cb1009e82d5",
     "references": [],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
