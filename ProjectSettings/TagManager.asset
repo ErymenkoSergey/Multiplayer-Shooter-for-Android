@@ -20,7 +20,6 @@ TagManager:
   - Remote
   - WeaponCam
   - IgnoreBullet
-  - Bullet
   layers:
   - Default
   - TransparentFX
