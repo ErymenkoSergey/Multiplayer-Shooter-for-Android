@@ -170,10 +170,11 @@ namespace Photon.Pun
 
 
 
-        [UnityEditor.InitializeOnLoadMethod]
-        public static void InitializeOnLoadMethod()
+        //[UnityEditor.InitializeOnLoadMethod]
+        [InitializeOnLoadMethod]
+        internal static void InitializeOnLoadMethod()
         {
-            //Debug.Log("InitializeOnLoadMethod()");
+            Debug.Log("InitializeOnLoadMethod()");
             EditorApplication.delayCall += OnDelayCall;
         }
 
@@ -181,7 +182,7 @@ namespace Photon.Pun
         // used to register for various events (post-load)
         private static void OnDelayCall()
         {
-            //Debug.Log("OnDelayCall()");
+            Debug.Log("OnDelayCall()");
 
             postInspectorUpdate = true;
 
