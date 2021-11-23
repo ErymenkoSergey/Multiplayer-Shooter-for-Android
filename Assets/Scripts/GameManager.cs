@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
 
 public static class GameMeaning
 {
+    #region Old game
     #region Build Settings
     public const int INTRO = 0; // id сцены в билд сеттингс)
     public const int MENU = 2;
@@ -108,5 +109,17 @@ public static class GameMeaning
 
     #region  Animations TIMING sync
     public const int DIETIME = 1000; //milliseq
+    #endregion
+    #endregion
+
+    #region New Game
+    #region Intro
+
+    #endregion
+    #region Menu/Lobby
+    public const int AUTOMATCHTIMER = 2;
+    #endregion
+
+
     #endregion
 }

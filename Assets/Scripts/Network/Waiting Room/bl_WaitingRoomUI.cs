@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
-using System.Linq;
+//using System.Linq;
 
 public class bl_WaitingRoomUI : bl_PhotonHelper
 {
@@ -30,17 +30,11 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
 
     private List<bl_WaitingPlayerUI> playerListCache = new List<bl_WaitingPlayerUI>();
 
-    /// <summary>
-    /// 
-    /// </summary>
     private void OnEnable()
     {
         Content.SetActive(false);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void Show()
     {
         UpdateRoomInfoUI();
@@ -49,9 +43,6 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         StartScreen.SetActive(true);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void Hide()
     {
         LeaveConfirmUI.SetActive(false);
@@ -60,9 +51,6 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         bl_LobbyUI.Instance.blackScreenFader.FadeOut(0.5f);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void InstancePlayerList()
     {
         playerListCache.ForEach(x => { if (x != null) { Destroy(x.gameObject); } });
@@ -108,9 +96,6 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         UpdatePlayerCount();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void SetPlayerToList(Player player)
     {
         GameObject g = Instantiate(WaitingPlayerPrefab) as GameObject;
@@ -119,10 +104,7 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         g.transform.SetParent(PlayerListPanel, false);
         playerListCache.Add(wp);
     }
-   
-    /// <summary>
-    /// 
-    /// </summary>
+
     public void UpdateRoomInfoUI()
     {
         GameMode mode = GetGameModeUpdated;
@@ -145,10 +127,6 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         GoalText.text = (string)room.CustomProperties[PropertiesKeys.RoomGoal].ToString() + " " + GetGameModeUpdated.GetModeInfo().GoalName.ToUpper();
     }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
     public void UpdatePlayerCount()
     {
         int required = GetGameModeUpdated.GetGameModeInfo().RequiredPlayersToStart;
@@ -167,34 +145,22 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void UpdateAllPlayersStates()
     {
         playerListCache.ForEach(x => { if(x != null) x.UpdateState(); });
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void SetLocalReady()
     {
         bl_WaitingRoom.Instance.SetLocalPlayerReady();
         readyButtons[1].GetComponentInChildren<Text>().text = bl_WaitingRoom.Instance.isLocalReady ? "CANCEL" : "READY";
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void MasterStartTheGame()
     {
         bl_WaitingRoom.Instance.StartGame();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void LeaveRoom(bool comfirmed)
     {
         if (comfirmed)
@@ -203,12 +169,11 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
             PhotonNetwork.LeaveRoom();
         }
         else
-        {
             LeaveConfirmUI.SetActive(true);
-        }      
     }
 
     private static bl_WaitingRoomUI _instance;
+
     public static bl_WaitingRoomUI Instance
     {
         get

@@ -189,7 +189,10 @@ public class bl_LobbyUI : MonoBehaviour
     }
 
     public void Home() { ChangeWindow(MainWindowName); bl_Lobby.Instance.onShowMenu?.Invoke(); }
-    public void HideAll() { currentWindow = ""; windows.ForEach(x => { if (x.UIRoot != null) { x.UIRoot.SetActive(false); } }); }//disable all windows 
+    public void HideAll() 
+    { 
+        currentWindow = ""; windows.ForEach(x => { if (x.UIRoot != null) { x.UIRoot.SetActive(false); } }); 
+    }//disable all windows 
 
     /// <summary>
     /// 
@@ -231,18 +234,12 @@ public class bl_LobbyUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void ChangeOptionsWindow(int id)
     {
         foreach (GameObject g in OptionsWindows) { g.SetActive(false); }
         OptionsWindows[id].SetActive(true);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void ShowPopUpWindow(string popUpName)
     {
         PopUpWindows w = popUpWindows.Find(x => x.Name == popUpName);
@@ -251,9 +248,6 @@ public class bl_LobbyUI : MonoBehaviour
         w.Window.SetActive(true);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     private void Update()
     {
         if (PhotonNetwork.IsConnected && bl_GameData.isDataCached)
@@ -268,9 +262,6 @@ public class bl_LobbyUI : MonoBehaviour
     }
 
     #region Settings
-    /// <summary>
-    /// 
-    /// </summary>
     public void LoadSettings()
     {
         ApplyRuntimeSettings();
@@ -308,9 +299,6 @@ public class bl_LobbyUI : MonoBehaviour
 #endif
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void ApplyRuntimeSettings()
     {
         if (bl_MFPS.Settings != null)
@@ -324,9 +312,6 @@ public class bl_LobbyUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void FullSetUp()
     {
         List<Dropdown.OptionData> od = new List<Dropdown.OptionData>();
@@ -362,9 +347,6 @@ public class bl_LobbyUI : MonoBehaviour
         SetRegionDropdown();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void OnLanguageChange(Dictionary<string, string> lang)
     {
 #if LOCALIZATION
@@ -373,18 +355,12 @@ public class bl_LobbyUI : MonoBehaviour
 #endif
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void ResetSettings()
     {
         LoadSettings();
         FullSetUp();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void SetRegionDropdown()
     {
         //when Photon Server is used
@@ -411,9 +387,6 @@ public class bl_LobbyUI : MonoBehaviour
     #endregion
 
     #region UI Callbacks
-    /// <summary>
-    /// 
-    /// </summary>
     public void EnterName(InputField field = null)
     {
         if (field == null || string.IsNullOrEmpty(field.text))
@@ -437,9 +410,6 @@ public class bl_LobbyUI : MonoBehaviour
 #endif
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void EnterPassword(InputField field = null)
     {
         if (field == null || string.IsNullOrEmpty(field.text))
@@ -452,18 +422,12 @@ public class bl_LobbyUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void CheckRoomPassword(RoomInfo room)
     {
         EnterPasswordUI.SetActive(true);
         bl_Lobby.Instance.CheckRoomPassword(room);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void OnEnterPassworld(InputField pass)
     {
         if (!bl_Lobby.Instance.SetRoomPassworld(pass.text))
@@ -495,9 +459,6 @@ public class bl_LobbyUI : MonoBehaviour
 #endif
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void ShowBuyCoins()
     {
 #if SHOP
@@ -515,9 +476,6 @@ public class bl_LobbyUI : MonoBehaviour
     }
 #endif
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void Quit()
     {
         confirmationWindow.AskConfirmation(bl_GameTexts.QuitGameConfirmation, () =>
@@ -527,9 +485,41 @@ public class bl_LobbyUI : MonoBehaviour
          });
     }
 
-    public void AutoMatch() { bl_Lobby.Instance.AutoMatch(); }
-    public void CreateRoom() { bl_Lobby.Instance.CreateRoom(); }
-    public void SetRememberMe(bool value) { bl_Lobby.Instance.SetRememberMe(value); }
+    public void AutoMatch()
+    {
+        bl_Lobby.Instance.AutoMatch();
+    }
+
+    public void CreateRoom()
+    { 
+        bl_Lobby.Instance.CreateRoom();
+    }
+
+    public void SetRememberMe(bool value)
+    { 
+        bl_Lobby.Instance.SetRememberMe(value); 
+    }
+
+    public void RoomTwo()
+    {
+        Debug.Log("2 Room");
+    }
+    public void Room3()
+    {
+        Debug.Log("3 Room");
+    }
+    public void Room4()
+    {
+        Debug.Log("4 Room");
+    }
+    public void Room5()
+    {
+        Debug.Log("5 Room");
+    }
+    public void Room6()
+    {
+        Debug.Log("6 Room");
+    }
     #endregion
 
     #region Classes

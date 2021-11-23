@@ -13,9 +13,6 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
     static readonly RaiseEventOptions EventsAll = new RaiseEventOptions();
     public bool isLocalReady { get; set; }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void Awake()
     {
         readyPlayers.Clear();
@@ -24,18 +21,12 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         PhotonNetwork.NetworkingClient.EventReceived += OnEventCustom;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
         PhotonNetwork.NetworkingClient.EventReceived -= OnEventCustom;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void AutoJoinToTeam()
     {
 
@@ -64,17 +55,11 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void JoinToTeam(Team team)
     {
         PhotonNetwork.LocalPlayer.SetPlayerTeam(team);
     }
 
-    /// <summary>
-    /// Local
-    /// </summary>
     public void SetLocalPlayerReady()
     {
         isLocalReady = !isLocalReady;
@@ -84,9 +69,6 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         PhotonNetwork.RaiseEvent(PropertiesKeys.WaitingPlayerReadyEvent, table, EventsAll, SendOptions.SendReliable);
     }
 
-    /// <summary>
-    /// From Server
-    /// </summary>
     void OnReceivePlayerState(HashTable data)
     {
         if (!data.ContainsKey(PropertiesKeys.WaitingState)) return;
@@ -115,9 +97,6 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         SetWaitingState(WaitingState.Started);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     private void SetWaitingState(WaitingState state)
     {
         HashTable table = new HashTable();
@@ -134,9 +113,6 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         //We don't need use a RPC cuz all player will receive a callback on OnRoomPropertiesUpdate and we can work with that
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void OnUpdateStates()
     {
         bl_WaitingRoomUI.Instance.UpdateAllPlayersStates();
@@ -146,9 +122,6 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void OnReceiveInitialInfo(HashTable data)
     {
         string source = (string)data[PropertiesKeys.PlayerID];
@@ -176,17 +149,11 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void LoadMap()
     {      
         bl_UtilityHelper.LoadLevel((string)PhotonNetwork.CurrentRoom.CustomProperties[PropertiesKeys.SceneNameKey]);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     IEnumerator WaitUntilFullyJoin()
     {
         //CHECK IF THE ROOM IS ALREADY STARTED
@@ -219,9 +186,6 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         bl_LobbyUI.Instance.blackScreenFader.FadeOut(0.4f);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     IEnumerator MoveToMap()
     {
         bl_WaitingRoomUI.Instance.LoadingMapUI.SetActive(true);

@@ -1,14 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CreateRoomUiForm.cs" company="Exit Games GmbH">
-//   Part of: Pun Cockpit Demo
-// </copyright>
-// <author>developer@exitgames.com</author>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections;
-using System.Linq;
-
+﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
@@ -31,11 +21,6 @@ namespace Photon.Pun.Demo.Cockpit.Forms
         public class OnSubmitEvent : UnityEvent<string, string, LobbyType, string[]> { }
 
         public OnSubmitEvent OnSubmit;
-
-        public void Start()
-        {
-
-        }
 
         // new UI will fire "EndEdit" event also when loosing focus. So check "enter" key and only then StartChat.
         public void EndEditOnEnter()

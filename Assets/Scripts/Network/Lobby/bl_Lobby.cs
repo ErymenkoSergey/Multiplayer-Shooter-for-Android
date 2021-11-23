@@ -191,9 +191,6 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
 #endif
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public bool EnterPassword(string password)
     {
         if (bl_GameData.Instance.CheckPasswordUse(CachePlayerName, password))
@@ -214,9 +211,6 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void AutoMatch()
     {
         if (isSeekingMatch)
@@ -226,14 +220,12 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         StartCoroutine(AutoMatchIE());
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     IEnumerator AutoMatchIE()
     {
+        Debug.Log("AuoMatch IENMEr");
         //active the search match UI
         bl_LobbyUI.Instance.SeekingMatchUI.SetActive(true);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(GameMeaning.AUTOMATCHTIMER);
         PhotonNetwork.JoinRandomRoom();
         isSeekingMatch = false;
         bl_LobbyUI.Instance.SeekingMatchUI.SetActive(false);
