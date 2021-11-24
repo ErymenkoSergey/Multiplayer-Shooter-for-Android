@@ -103,10 +103,7 @@ public class bl_AIShooterAgent : bl_AIShooter
         Agent.updateRotation = false;
         animationHash[0] = Animator.StringToHash("Crouch");
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
+    
     public override void Init()
     {
         isGameStarted = TimeManager.TimeState == RoomTimeState.Started;
@@ -114,9 +111,6 @@ public class bl_AIShooterAgent : bl_AIShooter
         References.shooterNetwork.CheckNamePlate();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public override void OnUpdate()
     {
         time = Time.time;
@@ -168,17 +162,11 @@ public class bl_AIShooterAgent : bl_AIShooter
         FootStep();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     private void OnAgentStateChanged(AIAgentState from, AIAgentState to)
     {
 
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     private void OnTargetChanged(Transform from, Transform to)
     {
 
@@ -203,17 +191,11 @@ public class bl_AIShooterAgent : bl_AIShooter
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void CorrectLookAt()
     {
         SetLookAtState(AILookAt.PathToTarget);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void TargetControll()
     {
         CachedTargetDistance = bl_UtilityHelper.Distance(Target.position, m_Transform.localPosition);
@@ -240,9 +222,6 @@ public class bl_AIShooterAgent : bl_AIShooter
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void WhenTargetOutOfRange()
     {
         if (behaviorSettings.targetOutRangeBehave == AITargetOutRangeBehave.SearchNewNearestTarget)
@@ -291,36 +270,24 @@ public class bl_AIShooterAgent : bl_AIShooter
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void WhenTargetOnMediumRange()
     {
         SetDebugState(3, true);
         OnTargeContest(false);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void WhenTargetOnCloseRange()
     {
         SetDebugState(4, true);
         Follow();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void WhenTargetOnLimitRange()
     {
         SetDebugState(5, true);
         OnTargeContest(true);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void OnCovering()
     {
         if (Target != null)
@@ -391,9 +358,6 @@ public class bl_AIShooterAgent : bl_AIShooter
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     private bool Cover(bool overridePoint, AIAgentCoverArea coverArea = AIAgentCoverArea.ToPoint)
     {
         //if the target if far, there's not point in cover right now
@@ -469,9 +433,6 @@ public class bl_AIShooterAgent : bl_AIShooter
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void OnGetHit(Vector3 pos)
     {
         LastHitDirection = pos;
@@ -507,9 +468,6 @@ public class bl_AIShooterAgent : bl_AIShooter
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void SwitchCover()
     {
         if (Agent.pathStatus != NavMeshPathStatus.PathComplete)
@@ -581,9 +539,6 @@ public class bl_AIShooterAgent : bl_AIShooter
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void SearchPlayers()
     {
         SetDebugState(-2);
@@ -620,9 +575,6 @@ public class bl_AIShooterAgent : bl_AIShooter
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     void CheckVision()
     {
         if (!HasATarget || !PhotonNetwork.IsMasterClient)

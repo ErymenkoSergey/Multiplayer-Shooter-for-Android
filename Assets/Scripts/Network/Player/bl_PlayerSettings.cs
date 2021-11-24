@@ -1,10 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////
-// bl_PlayerSettings.cs
-//
-// This script configures the required settings for the local and remote player
-//
-//                        Lovatto Studio
-////////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,26 +25,18 @@ public class bl_PlayerSettings : bl_PhotonHelper
     public bl_FPArmsMaterial armsMaterial;
     private List<bl_FPArmsMaterial.MaterialColor> currentWeaponMaterials = new List<bl_FPArmsMaterial.MaterialColor>();
     
-    /// <summary>
-    /// 
-    /// </summary>
-    void Awake()
+    private void Awake()
     {
         if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom) return;
         PlayerTeam = (Team)photonView.InstantiationData[0];
+
         if (isMine)
-        {
             OnLocalPlayer();
-        }
         else
-        {
             OnRemotePlayer();
-        }
     }
 
-    /// <summary>
-    /// We call this function only if this is a Remote player
-    /// </summary>
+    // We call this function only if this is a Remote player
     public void OnRemotePlayer()
     {
         for (int i = 0; i < LocalOnlyScripts.Count; i++)
@@ -62,6 +47,7 @@ public class bl_PlayerSettings : bl_PhotonHelper
             }
         }
         LocalObjects.SetActive(false);
+
         gameObject.tag = RemoteTag;
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 
@@ -76,13 +62,10 @@ public class bl_PlayerSettings : bl_PhotonHelper
             ActorView = photonView,
             AimPosition = carrierPoint,
         };
-
         bl_EventHandler.OnRemoteActorChange(photonView.Owner.NickName, playerData, true);
     }
 
-    /// <summary>
-    /// We call this function only if we are Local player
-    /// </summary>
+    // We call this function only if we are Local player
     public void OnLocalPlayer()
     {
         gameObject.name = PhotonNetwork.NickName;
@@ -106,17 +89,11 @@ public class bl_PlayerSettings : bl_PhotonHelper
 #endif
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     private void OnDisable()
     {
         SetDeafultWeaponRender();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     private void OnDestroy()
     {
         if(!photonView.IsMine)
@@ -146,9 +123,6 @@ public class bl_PlayerSettings : bl_PhotonHelper
     }
 #endif
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void DoSpawnWeaponRenderEffect(Renderer[] renderers)
     {
         if (!bl_GameData.Instance.doSpawnHandMeshEffect) return;
@@ -175,10 +149,6 @@ public class bl_PlayerSettings : bl_PhotonHelper
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     IEnumerator DoSpawnLoop()
     {
         float d = 0;
@@ -202,10 +172,7 @@ public class bl_PlayerSettings : bl_PhotonHelper
         SetDeafultWeaponRender();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void SetDeafultWeaponRender()
+    private void SetDeafultWeaponRender()
     {
         if (currentWeaponMaterials.Count > 0)
         {

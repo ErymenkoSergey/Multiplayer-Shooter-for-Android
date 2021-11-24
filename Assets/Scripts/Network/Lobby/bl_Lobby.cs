@@ -169,9 +169,6 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         bl_LobbyUI.Instance.SetRoomList(roomList);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void SetPlayerName(string InputName)
     {
         CachePlayerName = InputName;       
@@ -289,11 +286,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         bl_LobbyUI.Instance.blackScreenFader.FadeIn(0.3f);
         if (bl_AudioController.Instance != null) { bl_AudioController.Instance.StopBackground(); }
     }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
+    
     public void CreateRoom()
     {
         SetLobbyChat(false);
@@ -341,14 +334,24 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
             PublishUserId = true,
             EmptyRoomTtl = 0,
             BroadcastPropsChangeToAll = true,
+
+            //MaxPlayers = (byte)gameMode.maxPlayers[maxPlayersRandom],
+            //IsVisible = true,
+            //IsOpen = true,
+            //CustomRoomProperties = roomOption,
+            //CleanupCacheOnLeave = true,
+            //CustomRoomPropertiesForLobby = properties,
+            //BroadcastPropsChangeToAll = true,
+
+
+
         }, null);
+
+        Debug.Log("Create New Room ");
         bl_LobbyUI.Instance.blackScreenFader.FadeIn(0.3f);
         if (bl_AudioController.Instance != null) { bl_AudioController.Instance.StopBackground(); }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void SignOut()
     {
         PlayerPrefs.SetString(PropertiesKeys.RememberMe, string.Empty);
@@ -368,17 +371,11 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         rememberMe = value;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void CheckRoomPassword(RoomInfo room)
     {
         checkingRoom = room;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public bool SetRoomPassworld(string pass)
     {
         if (checkingRoom == null)
@@ -405,10 +402,8 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     private bool serverchangeRequested = false;
+
     public void ChangeServerCloud(int id)
     {
         if (PhotonNetwork.IsConnected && FirstConnectionMade)
@@ -446,9 +441,6 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void LoadLocalLevel(string level)
     {
         bl_LobbyUI.Instance.blackScreenFader.FadeIn(0.75f, () =>
@@ -458,10 +450,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
     }
     #endregion
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void GetPlayerName()
+    private void GetPlayerName()
     {
         bool isNameEmpty = string.IsNullOrEmpty(PhotonNetwork.NickName);
         if (isNameEmpty)
@@ -490,10 +479,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void GeneratePlayerName()
+    private void GeneratePlayerName()
     {
         if (!rememberMe)
         {
@@ -523,21 +509,14 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void GoToMainMenu()
+    private void GoToMainMenu()
     {
         if (!PhotonNetwork.IsConnected)
-        {
             ConnectPhoton();
-        }
         else
         {
             if (!PhotonNetwork.InLobby)
-            {
                 PhotonNetwork.JoinLobby();
-            }
             else
             {
                 if (!alreadyLoadHome) { bl_LobbyUI.Instance.Home(); alreadyLoadHome = true; }
@@ -547,10 +526,6 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     private IEnumerator MoveToGameScene()
     {
         //Wait for check
@@ -563,9 +538,6 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         bl_UtilityHelper.LoadLevel((string)PhotonNetwork.CurrentRoom.CustomProperties[PropertiesKeys.SceneNameKey]);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void ShowLevelList()
     {
 #if LM
@@ -577,10 +549,6 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
 #endif
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     IEnumerator StartFade()
     {
         bl_LobbyUI.Instance.LoadingScreen.gameObject.SetActive(true);
@@ -603,9 +571,6 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         GetPlayerName();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     IEnumerator ShowLoadingScreen(bool autoHide = false, float showTime = 2)
     {
         bl_LobbyUI.Instance.LoadingScreen.gameObject.SetActive(true);
@@ -628,10 +593,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void SetLobbyChat(bool connect)
+    private void SetLobbyChat(bool connect)
     {
         if (bl_LobbyChat.Instance == null) return;
         if (!bl_GameData.Instance.UseLobbyChat) return;
@@ -641,9 +603,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
     }
 
     #region Photon Callbacks
-    /// <summary>
-    /// 
-    /// </summary>
+
     public void OnConnected()
     {
         FirstConnectionMade = true;
@@ -657,9 +617,6 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
@@ -800,6 +757,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
     }
 
     private static bl_Lobby _instance;
+
     public static bl_Lobby Instance
     {
         get

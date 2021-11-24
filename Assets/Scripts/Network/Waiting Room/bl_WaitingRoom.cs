@@ -197,6 +197,7 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
     #region Photon Callbacks
     public void OnCreatedRoom()
     {
+        Debug.Log("Admin CreatedRoom");
     }
 
     public void OnCreateRoomFailed(short returnCode, string message)
