@@ -18,5 +18,5 @@ MonoBehaviour:
   rotationSmoothing: 6
   closeRange: 12
   mediumRange: 35
-  farRange: 50
-  limitRange: 75
+  farRange: 70
+  limitRange: 90

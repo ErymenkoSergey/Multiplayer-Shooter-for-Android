@@ -4186,6 +4186,7 @@ MonoBehaviour:
     LevelNameText: {fileID: 2760295372172838394}
   confirmationWindow: {fileID: 2872105870682129082}
   blackScreenFader: {fileID: 8576678176714629001}
+  roomNameInputField: {fileID: 0}
 --- !u!1 &1363586530609202
 GameObject:
   m_ObjectHideFlags: 0

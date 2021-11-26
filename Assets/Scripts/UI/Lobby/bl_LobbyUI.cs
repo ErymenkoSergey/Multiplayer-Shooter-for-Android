@@ -8,6 +8,8 @@ using System;
 using MFPS.Audio;
 using MFPS.Runtime.UI;
 using MFPS.Runtime.FriendList;
+using System.Threading.Tasks;
+using TMPro;
 
 public class bl_LobbyUI : MonoBehaviour
 {
@@ -487,12 +489,38 @@ public class bl_LobbyUI : MonoBehaviour
 
     public void AutoMatch()
     {
-        bl_Lobby.Instance.AutoMatch();
+        bl_Lobby.Instance.AutoMatch(); // сделать автоматч 
+
     }
+
+    [SerializeField]
+    TMP_InputField roomNameInputField; //add name Maps
 
     public void CreateRoom()
     { 
         bl_Lobby.Instance.CreateRoom();
+
+
+        //if (string.IsNullOrEmpty(roomNameInputField.text))
+        //    return;
+
+        PhotonNetwork.CreateRoom(roomNameInputField.text);
+        MenuManager.inst.OpenMenu("loading");
+        //SoundManager.inst.PlayButton();
+    }
+
+    public async void StartGame()
+    {
+        сделать выбор режимов
+        //if (GameMeaning.teamID == 1 || GameMeaning.teamID == 2)
+        //{
+            //SoundManager.inst.PlayButton();
+            await Task.Delay(GameMeaning.TIMINGLOADGAMESTART);
+            PhotonNetwork.LoadLevel(GameMeaning.SCENEFIRST); // my game scene
+            Cursor.visible = false;
+        //}
+        //else
+        //    panelControlsTeams.SetActive(true);
     }
 
     public void SetRememberMe(bool value)
