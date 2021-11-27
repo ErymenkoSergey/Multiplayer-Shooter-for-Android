@@ -205,7 +205,7 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
     {
        // errorText.text = "Room Creation Failed: " + message;
         MenuManager.inst.OpenMenu("error");
-         Add Tab Error!
+        // Add Tab Error!
     }
 
     public void OnFriendListUpdate(List<FriendInfo> friendList)

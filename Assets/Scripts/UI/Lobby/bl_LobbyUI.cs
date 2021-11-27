@@ -48,9 +48,7 @@ public class bl_LobbyUI : MonoBehaviour
     private string currentWindow = "";
     #endregion
 
-    /// <summary>
-    /// 
-    /// </summary>
+    #region Photones
     public void InitialSetup()
     {
         cachedRoomList = new Dictionary<string, RoomInfo>();
@@ -64,9 +62,6 @@ public class bl_LobbyUI : MonoBehaviour
         blackScreenFader.SetAlpha(1);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     private void OnEnable()
     {
 #if ULSP
@@ -74,10 +69,7 @@ public class bl_LobbyUI : MonoBehaviour
 #endif
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void OnDisable()
+    private void OnDisable()
     {
         bl_EventHandler.onGameSettingsChange -= ApplyRuntimeSettings;
 #if LOCALIZATION
@@ -103,10 +95,7 @@ public class bl_LobbyUI : MonoBehaviour
         InstanceRoomList();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void InstanceRoomList()
+    private void InstanceRoomList()
     {
         if (cachedRoomList.Count > 0)
         {
@@ -134,9 +123,6 @@ public class bl_LobbyUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     private void UpdateCachedRoomList(List<RoomInfo> roomList)
     {
         foreach (RoomInfo info in roomList)
@@ -150,7 +136,6 @@ public class bl_LobbyUI : MonoBehaviour
                 }
                 continue;
             }
-
             // Update cached room info
             if (cachedRoomList.ContainsKey(info.Name))
             {
@@ -164,9 +149,6 @@ public class bl_LobbyUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void ChangeWindow(string window)
     {
         if (window == currentWindow) return;//return if we are trying to open the opened window
@@ -178,9 +160,6 @@ public class bl_LobbyUI : MonoBehaviour
         currentWindow = window;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void SetEnableWindow(string windowName, bool active)
     {
         WindowUI w = windows.Find(x => x.Name == windowName);
@@ -196,9 +175,6 @@ public class bl_LobbyUI : MonoBehaviour
         currentWindow = ""; windows.ForEach(x => { if (x.UIRoot != null) { x.UIRoot.SetActive(false); } }); 
     }//disable all windows 
 
-    /// <summary>
-    /// 
-    /// </summary>
     IEnumerator DoChangeWindow(WindowUI window)
     {
         //now change the windows
@@ -301,7 +277,7 @@ public class bl_LobbyUI : MonoBehaviour
 #endif
     }
 
-    void ApplyRuntimeSettings()
+    private void ApplyRuntimeSettings()
     {
         if (bl_MFPS.Settings != null)
         {
@@ -349,7 +325,7 @@ public class bl_LobbyUI : MonoBehaviour
         SetRegionDropdown();
     }
 
-    void OnLanguageChange(Dictionary<string, string> lang)
+    private void OnLanguageChange(Dictionary<string, string> lang)
     {
 #if LOCALIZATION
         NoRoomText.text = bl_Localization.Instance.GetText("norooms");
@@ -363,7 +339,7 @@ public class bl_LobbyUI : MonoBehaviour
         FullSetUp();
     }
 
-    void SetRegionDropdown()
+    private void SetRegionDropdown()
     {
         //when Photon Server is used
         if (!PhotonNetwork.PhotonServerSettings.AppSettings.UseNameServer)
@@ -477,8 +453,30 @@ public class bl_LobbyUI : MonoBehaviour
         UpdateCoinsText();
     }
 #endif
+    #endregion Photones
+    #endregion
 
-    public void Quit()
+    #region ButtonsGames
+
+    [SerializeField]
+    Button newGame, clousedPanelNewGame, quitGame, autoMatch, openPanelCreateRoom,
+        clousedPanelCreateRoom, maniacMode, battleRoyaleMode, customMap, startGame;
+
+    private void Start()
+    {
+        newGame.onClick.AddListener(NewGame);
+        clousedPanelNewGame.onClick.AddListener(ClousedPanelNewGame);
+        quitGame.onClick.AddListener(Quit);
+        autoMatch.onClick.AddListener(AutoMatch);
+        openPanelCreateRoom.onClick.AddListener(OpenPanelCreateRoom);
+        clousedPanelCreateRoom.onClick.AddListener(ClousedPanelCreateRoom);
+        maniacMode.onClick.AddListener(ManiacMode);
+        battleRoyaleMode.onClick.AddListener(BattleRoyaleMode);
+        customMap.onClick.AddListener(CustomMap);
+        startGame.onClick.AddListener(StartGame);
+    }
+
+    private void Quit()
     {
         confirmationWindow.AskConfirmation(bl_GameTexts.QuitGameConfirmation, () =>
          {
@@ -487,31 +485,64 @@ public class bl_LobbyUI : MonoBehaviour
          });
     }
 
-    public void AutoMatch()
-    {
-        bl_Lobby.Instance.AutoMatch(); // сделать автоматч 
+    [SerializeField]
+    GameObject panelNewGame, panelCreateNewMap;
 
+
+    private void NewGame() // Готово
+    {
+        panelNewGame.SetActive(true);
+    }
+
+    private void ClousedPanelNewGame() // Готово
+    {
+        panelNewGame.SetActive(false);
+    }
+
+    private void AutoMatch() // Готово
+    {
+        bl_Lobby.Instance.AutoMatch();
     }
 
     [SerializeField]
     TMP_InputField roomNameInputField; //add name Maps
 
-    public void CreateRoom()
-    { 
-        bl_Lobby.Instance.CreateRoom();
+    private void OpenPanelCreateRoom()
+    {
+        panelCreateNewMap.SetActive(true);
+    }
 
+    private void ClousedPanelCreateRoom()
+    {
+        panelCreateNewMap.SetActive(false);
+    }
+
+    private void ManiacMode()
+    {
+        Debug.Log("ManiacMode");
+        // bl_Lobby.Instance.CreateRoom();
 
         //if (string.IsNullOrEmpty(roomNameInputField.text))
         //    return;
 
-        PhotonNetwork.CreateRoom(roomNameInputField.text);
-        MenuManager.inst.OpenMenu("loading");
+        //PhotonNetwork.CreateRoom(roomNameInputField.text);
+        //MenuManager.inst.OpenMenu("loading");
         //SoundManager.inst.PlayButton();
     }
 
-    public async void StartGame()
+    private void BattleRoyaleMode()
     {
-        сделать выбор режимов
+        Debug.Log("BattleRoyaleMode");
+    }
+
+    private void CustomMap()
+    {
+        Debug.Log("CustomMap");
+    }
+
+    private async void StartGame()
+    {
+        //сделать выбор режимов
         //if (GameMeaning.teamID == 1 || GameMeaning.teamID == 2)
         //{
             //SoundManager.inst.PlayButton();
@@ -528,26 +559,26 @@ public class bl_LobbyUI : MonoBehaviour
         bl_Lobby.Instance.SetRememberMe(value); 
     }
 
-    public void RoomTwo()
-    {
-        Debug.Log("2 Room");
-    }
-    public void Room3()
-    {
-        Debug.Log("3 Room");
-    }
-    public void Room4()
-    {
-        Debug.Log("4 Room");
-    }
-    public void Room5()
-    {
-        Debug.Log("5 Room");
-    }
-    public void Room6()
-    {
-        Debug.Log("6 Room");
-    }
+    //public void RoomTwo()
+    //{
+    //    Debug.Log("2 Room");
+    //}
+    //public void Room3()
+    //{
+    //    Debug.Log("3 Room");
+    //}
+    //public void Room4()
+    //{
+    //    Debug.Log("4 Room");
+    //}
+    //public void Room5()
+    //{
+    //    Debug.Log("5 Room");
+    //}
+    //public void Room6()
+    //{
+    //    Debug.Log("6 Room");
+    //}
     #endregion
 
     #region Classes
