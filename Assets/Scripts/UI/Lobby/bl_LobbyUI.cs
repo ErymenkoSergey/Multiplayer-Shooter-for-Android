@@ -460,7 +460,8 @@ public class bl_LobbyUI : MonoBehaviour
 
     [SerializeField]
     Button newGame, clousedPanelNewGame, quitGame, autoMatch, openPanelCreateRoom,
-        clousedPanelCreateRoom, maniacMode, battleRoyaleMode, customMap, startGame;
+        clousedPanelCreateRoom, maniacMode, battleRoyaleMode, customMap, startGame,
+        singlePlayerGame, openPanelFindMap, clousedPanelFindMap;
 
     private void Start()
     {
@@ -474,6 +475,9 @@ public class bl_LobbyUI : MonoBehaviour
         battleRoyaleMode.onClick.AddListener(BattleRoyaleMode);
         customMap.onClick.AddListener(CustomMap);
         startGame.onClick.AddListener(StartGame);
+        singlePlayerGame.onClick.AddListener(SinglePlayerGame);
+        openPanelFindMap.onClick.AddListener(OpenPanelFindMap);
+        clousedPanelFindMap.onClick.AddListener(ClousedPanelFindMap);
     }
 
     private void Quit()
@@ -486,8 +490,19 @@ public class bl_LobbyUI : MonoBehaviour
     }
 
     [SerializeField]
-    GameObject panelNewGame, panelCreateNewMap;
+    GameObject panelNewGame, panelCreateNewMap, panelFindMap;
 
+    private void OpenPanelFindMap()
+    {
+        Debug.Log("findMap ");
+        panelFindMap.SetActive(true);
+    }
+
+    private void ClousedPanelFindMap()
+    {
+        Debug.Log("ClousedFindMap");
+        panelFindMap.SetActive(false);
+    }
 
     private void NewGame() // Готово
     {
@@ -538,6 +553,11 @@ public class bl_LobbyUI : MonoBehaviour
     private void CustomMap()
     {
         Debug.Log("CustomMap");
+    }
+
+    private void SinglePlayerGame()
+    {
+        Debug.Log("SinglePlayerGame");
     }
 
     private async void StartGame()
