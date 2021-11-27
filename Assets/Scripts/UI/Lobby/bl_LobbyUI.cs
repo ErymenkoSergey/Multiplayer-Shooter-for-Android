@@ -460,8 +460,8 @@ public class bl_LobbyUI : MonoBehaviour
 
     [SerializeField]
     Button newGame, clousedPanelNewGame, quitGame, autoMatch, openPanelCreateRoom,
-        clousedPanelCreateRoom, maniacMode, battleRoyaleMode, customMap, startGame,
-        singlePlayerGame, openPanelFindMap, clousedPanelFindMap;
+        clousedPanelCreateRoom, maniacMode, battleRoyaleMode, customMap, createRoom,
+        singlePlayerGame, openPanelFindMap, clousedPanelFindMap, backCreateRoom;
 
     private void Start()
     {
@@ -474,10 +474,11 @@ public class bl_LobbyUI : MonoBehaviour
         maniacMode.onClick.AddListener(ManiacMode);
         battleRoyaleMode.onClick.AddListener(BattleRoyaleMode);
         customMap.onClick.AddListener(CustomMap);
-        startGame.onClick.AddListener(StartGame);
+        createRoom.onClick.AddListener(CreateRoomGame);
         singlePlayerGame.onClick.AddListener(SinglePlayerGame);
         openPanelFindMap.onClick.AddListener(OpenPanelFindMap);
         clousedPanelFindMap.onClick.AddListener(ClousedPanelFindMap);
+        backCreateRoom.onClick.AddListener(LeaveCreateRoom);
     }
 
     private void Quit()
@@ -490,7 +491,7 @@ public class bl_LobbyUI : MonoBehaviour
     }
 
     [SerializeField]
-    GameObject panelNewGame, panelCreateNewMap, panelFindMap;
+    GameObject panelNewGame, panelCreateNewMap, panelFindMap, panelCreateNewMapName;
 
     private void OpenPanelFindMap()
     {
@@ -535,24 +536,26 @@ public class bl_LobbyUI : MonoBehaviour
     private void ManiacMode()
     {
         Debug.Log("ManiacMode");
+
+        panelCreateNewMapName.SetActive(true);
         // bl_Lobby.Instance.CreateRoom();
-
-        //if (string.IsNullOrEmpty(roomNameInputField.text))
-        //    return;
-
-        //PhotonNetwork.CreateRoom(roomNameInputField.text);
-        //MenuManager.inst.OpenMenu("loading");
-        //SoundManager.inst.PlayButton();
     }
 
     private void BattleRoyaleMode()
     {
         Debug.Log("BattleRoyaleMode");
+        panelCreateNewMapName.SetActive(true);
     }
 
     private void CustomMap()
     {
         Debug.Log("CustomMap");
+        panelCreateNewMapName.SetActive(true);
+    }
+
+    private void LeaveCreateRoom()
+    {
+        panelCreateNewMapName.SetActive(false);
     }
 
     private void SinglePlayerGame()
@@ -560,15 +563,24 @@ public class bl_LobbyUI : MonoBehaviour
         Debug.Log("SinglePlayerGame");
     }
 
-    private async void StartGame()
+    private void CreateRoomGame()
     {
         //сделать выбор режимов
+
+        if (string.IsNullOrEmpty(roomNameInputField.text))
+            return;
+        Debug.Log("Start Game" + roomNameInputField.ToString());
+
+        PhotonNetwork.CreateRoom(roomNameInputField.text);
+
+        //MenuManager.inst.OpenMenu("loading");
+        SoundManager.inst.PlayButton();
         //if (GameMeaning.teamID == 1 || GameMeaning.teamID == 2)
         //{
-            //SoundManager.inst.PlayButton();
-            await Task.Delay(GameMeaning.TIMINGLOADGAMESTART);
-            PhotonNetwork.LoadLevel(GameMeaning.SCENEFIRST); // my game scene
-            Cursor.visible = false;
+        //SoundManager.inst.PlayButton();
+        //await Task.Delay(GameMeaning.TIMINGLOADGAMESTART);
+        //PhotonNetwork.LoadLevel(GameMeaning.SCENEFIRST); // my game scene
+        //Cursor.visible = false;
         //}
         //else
         //    panelControlsTeams.SetActive(true);
@@ -579,27 +591,31 @@ public class bl_LobbyUI : MonoBehaviour
         bl_Lobby.Instance.SetRememberMe(value); 
     }
 
-    //public void RoomTwo()
-    //{
-    //    Debug.Log("2 Room");
-    //}
-    //public void Room3()
-    //{
-    //    Debug.Log("3 Room");
-    //}
-    //public void Room4()
-    //{
-    //    Debug.Log("4 Room");
-    //}
-    //public void Room5()
-    //{
-    //    Debug.Log("5 Room");
-    //}
-    //public void Room6()
-    //{
-    //    Debug.Log("6 Room");
-    //}
     #endregion
+
+    public override void OnJoinedRoom()
+    {
+        SoundManager.inst.PlayButton();
+        MenuManager.inst.OpenMenu("room");
+        roomNameText.text = PhotonNetwork.CurrentRoom.Name;
+
+        Player[] players = PhotonNetwork.PlayerList;
+
+        foreach (Transform child in playerListContent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        for (int i = 0; i < players.Count(); i++)
+            Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
+
+        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
+    }
 
     #region Classes
     [System.Serializable]

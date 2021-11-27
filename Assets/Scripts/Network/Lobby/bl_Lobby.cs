@@ -352,6 +352,8 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         if (bl_AudioController.Instance != null) { bl_AudioController.Instance.StopBackground(); }
     }
 
+    
+
     public void SignOut()
     {
         PlayerPrefs.SetString(PropertiesKeys.RememberMe, string.Empty);
