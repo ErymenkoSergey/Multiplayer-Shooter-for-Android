@@ -8,8 +8,8 @@ using System;
 using MFPS.Audio;
 using MFPS.Runtime.UI;
 using MFPS.Runtime.FriendList;
-using System.Threading.Tasks;
 using TMPro;
+using System.Threading.Tasks;
 
 public class bl_LobbyUI : MonoBehaviour
 {
@@ -461,7 +461,8 @@ public class bl_LobbyUI : MonoBehaviour
     [SerializeField]
     Button newGame, clousedPanelNewGame, quitGame, autoMatch, openPanelCreateRoom,
         clousedPanelCreateRoom, maniacMode, battleRoyaleMode, customMap, createRoom,
-        singlePlayerGame, openPanelFindMap, clousedPanelFindMap, backCreateRoom;
+        singlePlayerGame, openPanelFindMap, clousedPanelFindMap, backCreateRoom, clousedRoomMenuPanel
+        ;
 
     private void Start()
     {
@@ -479,6 +480,7 @@ public class bl_LobbyUI : MonoBehaviour
         openPanelFindMap.onClick.AddListener(OpenPanelFindMap);
         clousedPanelFindMap.onClick.AddListener(ClousedPanelFindMap);
         backCreateRoom.onClick.AddListener(LeaveCreateRoom);
+        clousedRoomMenuPanel.onClick.AddListener(ClousedRoomMenuPanel);
     }
 
     private void Quit()
@@ -491,7 +493,8 @@ public class bl_LobbyUI : MonoBehaviour
     }
 
     [SerializeField]
-    GameObject panelNewGame, panelCreateNewMap, panelFindMap, panelCreateNewMapName;
+    GameObject panelNewGame, panelCreateNewMap, panelFindMap, panelCreateNewMapName, 
+        roomMenuPanel;
 
     private void OpenPanelFindMap()
     {
@@ -522,6 +525,14 @@ public class bl_LobbyUI : MonoBehaviour
 
     [SerializeField]
     TMP_InputField roomNameInputField; //add name Maps
+
+    [SerializeField]
+    public TMP_Text roomNameText;
+    [SerializeField]
+    public Transform roomListContent, playerListContent;
+
+    [SerializeField]
+    internal GameObject PlayerListItemPrefab, roomListItemPrefab, startGameButton;
 
     private void OpenPanelCreateRoom()
     {
@@ -560,30 +571,22 @@ public class bl_LobbyUI : MonoBehaviour
 
     private void SinglePlayerGame()
     {
-        Debug.Log("SinglePlayerGame");
+        Debug.Log("SinglePlayerGame"); // Просто перенести на сцену с одиночной компанией и сюжетом
     }
 
     private void CreateRoomGame()
     {
-        //сделать выбор режимов
-
         if (string.IsNullOrEmpty(roomNameInputField.text))
             return;
-        Debug.Log("Start Game" + roomNameInputField.ToString());
 
         PhotonNetwork.CreateRoom(roomNameInputField.text);
-
-        //MenuManager.inst.OpenMenu("loading");
-        SoundManager.inst.PlayButton();
-        //if (GameMeaning.teamID == 1 || GameMeaning.teamID == 2)
-        //{
+        roomMenuPanel.SetActive(true); 
         //SoundManager.inst.PlayButton();
-        //await Task.Delay(GameMeaning.TIMINGLOADGAMESTART);
-        //PhotonNetwork.LoadLevel(GameMeaning.SCENEFIRST); // my game scene
-        //Cursor.visible = false;
-        //}
-        //else
-        //    panelControlsTeams.SetActive(true);
+    }
+
+    private void ClousedRoomMenuPanel()
+    {
+        roomMenuPanel.SetActive(false);
     }
 
     public void SetRememberMe(bool value)
@@ -591,31 +594,23 @@ public class bl_LobbyUI : MonoBehaviour
         bl_Lobby.Instance.SetRememberMe(value); 
     }
 
+    //[SerializeField]
+    //GameObject panelControlsTeams;
+    public async void StartGame()
+    {
+        //if (GameMeaning.teamID == 1 || GameMeaning.teamID == 2)
+        //{
+            SoundManager.inst.PlayButton();
+            await Task.Delay(GameMeaning.TIMINGLOADGAMESTART);
+            PhotonNetwork.LoadLevel(GameMeaning.SCENEFIRST);
+            Cursor.visible = false;
+        Debug.Log("Start Scenes Admin");
+        //}
+        //else
+        //    panelControlsTeams.SetActive(true);
+    }
+
     #endregion
-
-    public override void OnJoinedRoom()
-    {
-        SoundManager.inst.PlayButton();
-        MenuManager.inst.OpenMenu("room");
-        roomNameText.text = PhotonNetwork.CurrentRoom.Name;
-
-        Player[] players = PhotonNetwork.PlayerList;
-
-        foreach (Transform child in playerListContent)
-        {
-            Destroy(child.gameObject);
-        }
-
-        for (int i = 0; i < players.Count(); i++)
-            Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
-
-        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
-    }
-
-    public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
-    }
 
     #region Classes
     [System.Serializable]

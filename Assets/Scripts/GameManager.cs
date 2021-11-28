@@ -33,7 +33,7 @@ public static class GameMeaning
     #region Build Settings
     public const int INTRO = 0; // id сцены в билд сеттингс)
     public const int MENU = 2;
-    public const int SCENEFIRST = 2; 
+    public const int SCENEFIRST = 3; 
     public const int SCENESECOND = 2; // not
     public const int SCENETHIRD = 3; // not
     #endregion

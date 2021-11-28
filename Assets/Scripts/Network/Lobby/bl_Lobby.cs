@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 using Photon.Pun;
 using Photon.Realtime;
 using MFPS.Audio;
+using System.Linq;
 
 [DefaultExecutionOrder(-998)]
 public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, IMatchmakingCallbacks
@@ -42,10 +43,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
     private string playerName;
     #endregion
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void Awake()
+    private void Awake()
     {
 #if ULSP
         if (bl_DataBase.Instance == null && bl_LoginProDataBase.Instance.ForceLoginScene)
@@ -83,10 +81,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         if (bl_PhotonNetwork.Instance == null) { Instantiate(PhotonGamePrefab); }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void SetUpGameModes()
+    private void SetUpGameModes()
     {
         List<GameModeSettings> gm = new List<GameModeSettings>();
         for (int i = 0; i < bl_GameData.Instance.gameModes.Count; i++)
@@ -99,17 +94,11 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         GameModes = gm.ToArray();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void OnDisable()
+    private void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void ConnectPhoton()
     {
         // the following line checks if this client was just created (and not yet online). if so, we connect
@@ -138,9 +127,6 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void Disconect()
     {
         SetLobbyChat(false);
@@ -149,11 +135,8 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
             PhotonNetwork.Disconnect();
         }
     }
-    void DelayDisconnect() { PhotonNetwork.Disconnect(); }
+    private void DelayDisconnect() { PhotonNetwork.Disconnect(); }
 
-    /// <summary>
-    /// 
-    /// </summary>
     private void OnApplicationQuit()
     {
         AppQuit = true;
@@ -161,9 +144,6 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         Disconect();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void ServerList(List<RoomInfo> roomList)
     {
         bl_LobbyUI.Instance.SetRoomList(roomList);
@@ -343,16 +323,12 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
             //CustomRoomPropertiesForLobby = properties,
             //BroadcastPropsChangeToAll = true,
 
-
-
         }, null);
 
         Debug.Log("Create New Room ");
         bl_LobbyUI.Instance.blackScreenFader.FadeIn(0.3f);
         if (bl_AudioController.Instance != null) { bl_AudioController.Instance.StopBackground(); }
     }
-
-    
 
     public void SignOut()
     {
@@ -692,15 +668,34 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
 
     public void OnJoinedRoom()
     {
-        if (bl_GameData.Instance.lobbyJoinMethod == LobbyJoinMethod.DirectToMap)
-        {
-            Debug.Log($"Local client joined to the room '{PhotonNetwork.CurrentRoom.Name}'");
-            StartCoroutine(MoveToGameScene());
-        }
-        else
-        {
-            SetLobbyChat(false);
-        }
+        //if (bl_GameData.Instance.lobbyJoinMethod == LobbyJoinMethod.DirectToMap)
+        //{
+        //    Debug.Log($"Local client joined to the room '{PhotonNetwork.CurrentRoom.Name}'");
+        //    StartCoroutine(MoveToGameScene());
+        //}
+        //else
+        //{
+        //    SetLobbyChat(false);
+        //}
+
+        SoundManager.inst.PlayButton();
+
+        bl_LobbyUI.Instance.roomNameText.text = PhotonNetwork.CurrentRoom.Name;
+
+        Player[] players = PhotonNetwork.PlayerList;
+
+        foreach (Transform child in bl_LobbyUI.Instance.playerListContent)
+            Destroy(child.gameObject);
+
+        for (int i = 0; i < players.Count(); i++)
+            Instantiate(bl_LobbyUI.Instance.PlayerListItemPrefab, bl_LobbyUI.Instance.playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
+
+        bl_LobbyUI.Instance.startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+    }
+
+    public void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Instantiate(bl_LobbyUI.Instance.PlayerListItemPrefab, bl_LobbyUI.Instance.playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
     }
 
     public void OnCustomAuthenticationResponse(Dictionary<string, object> data)
