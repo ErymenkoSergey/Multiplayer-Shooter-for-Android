@@ -10,6 +10,7 @@ using MFPS.Runtime.UI;
 using MFPS.Runtime.FriendList;
 using TMPro;
 using System.Threading.Tasks;
+using System.Linq;
 
 public class bl_LobbyUI : MonoBehaviour
 {
@@ -580,6 +581,7 @@ public class bl_LobbyUI : MonoBehaviour
             return;
 
         PhotonNetwork.CreateRoom(roomNameInputField.text);
+       // bl_Lobby.Instance.OnJoinedRoom();
         roomMenuPanel.SetActive(true); 
         //SoundManager.inst.PlayButton();
     }
@@ -600,7 +602,7 @@ public class bl_LobbyUI : MonoBehaviour
     {
         //if (GameMeaning.teamID == 1 || GameMeaning.teamID == 2)
         //{
-            SoundManager.inst.PlayButton();
+            //SoundManager.inst.PlayButton();
             await Task.Delay(GameMeaning.TIMINGLOADGAMESTART);
             PhotonNetwork.LoadLevel(GameMeaning.SCENEFIRST);
             Cursor.visible = false;
@@ -608,6 +610,26 @@ public class bl_LobbyUI : MonoBehaviour
         //}
         //else
         //    panelControlsTeams.SetActive(true);
+    }
+
+    internal void OnJoinedRoom()
+    {
+        roomNameText.text = PhotonNetwork.CurrentRoom.Name;
+
+        Player[] players = PhotonNetwork.PlayerList;
+
+        foreach (Transform child in playerListContent)
+            Destroy(child.gameObject);
+
+        for (int i = 0; i < players.Count(); i++)
+            Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
+
+        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+    }
+
+    internal void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
     }
 
     #endregion

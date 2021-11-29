@@ -66,7 +66,7 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    if(list[i].GetPlayerTeam() != Team.All)
+                    if (list[i].GetPlayerTeam() != Team.All)
                     {
                         list[i].SetPlayerTeam(Team.All);
                     }
@@ -77,7 +77,7 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
             {
                 if (list[i].GetPlayerTeam() == Team.Team1)
                 {
-                    SetPlayerToList(list[i]);   
+                    SetPlayerToList(list[i]);
                 }
                 else if (list[i].GetPlayerTeam() == Team.Team2)
                 {
@@ -87,7 +87,7 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         }
         if (!otm) { PlayerListHeaders[1].SetAsLastSibling(); }
         if (secondTeam.Count > 0)
-        {          
+        {
             for (int i = 0; i < secondTeam.Count; i++)
             {
                 SetPlayerToList(secondTeam[i]);
@@ -105,6 +105,7 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         playerListCache.Add(wp);
     }
 
+    internal bool isCreateRoom;
     public void UpdateRoomInfoUI()
     {
         GameMode mode = GetGameModeUpdated;
@@ -112,25 +113,30 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         RoomNameText.text = room.Name.ToUpper();
         string mapName = (string)room.CustomProperties[PropertiesKeys.SceneNameKey];
         bl_GameData.SceneInfo si = bl_GameData.Instance.AllScenes.Find(x => x.RealSceneName == mapName);
-        MapPreview.sprite = si.Preview;
-        MapNameText.text = si.ShowName.ToUpper();
+
+        if (!isCreateRoom)
+        {
+            MapPreview.sprite = si.Preview;
+            MapNameText.text = si.ShowName.ToUpper();
+            int t = (int)room.CustomProperties[PropertiesKeys.TimeRoomKey];
+            TimeText.text = (t / 60).ToString().ToUpper() + ":00";
+            BotsText.text = string.Format("BOTS: {0}", (bool)room.CustomProperties[PropertiesKeys.WithBotsKey] ? "ON" : "OFF");
+            FriendlyFireText.text = string.Format("FRIENDLY FIRE: {0}", (bool)room.CustomProperties[PropertiesKeys.RoomFriendlyFire] ? "ON" : "OFF");
+            GoalText.text = (string)room.CustomProperties[PropertiesKeys.RoomGoal].ToString() + " " + GetGameModeUpdated.GetModeInfo().GoalName.ToUpper();
+
+        }
         GameModeText.text = mode.GetName().ToUpper();
-        int t = (int)room.CustomProperties[PropertiesKeys.TimeRoomKey];
-        TimeText.text = (t / 60).ToString().ToUpper() + ":00";
-        BotsText.text = string.Format("BOTS: {0}", (bool)room.CustomProperties[PropertiesKeys.WithBotsKey] ? "ON" : "OFF");
-        FriendlyFireText.text = string.Format("FRIENDLY FIRE: {0}", (bool)room.CustomProperties[PropertiesKeys.RoomFriendlyFire] ? "ON" : "OFF");       
         UpdatePlayerCount();
         readyButtons[0].gameObject.SetActive(PhotonNetwork.IsMasterClient);
         readyButtons[1].gameObject.SetActive(!PhotonNetwork.IsMasterClient);
         readyButtons[1].GetComponentInChildren<Text>().text = bl_WaitingRoom.Instance.isLocalReady ? "CANCEL" : "READY";
 
-        GoalText.text = (string)room.CustomProperties[PropertiesKeys.RoomGoal].ToString() + " " + GetGameModeUpdated.GetModeInfo().GoalName.ToUpper();
     }
 
     public void UpdatePlayerCount()
     {
         int required = GetGameModeUpdated.GetGameModeInfo().RequiredPlayersToStart;
-        if(required > 1)
+        if (required > 1)
         {
             bool allRequired = (PhotonNetwork.PlayerList.Length >= required);
             readyButtons[0].interactable = (PhotonNetwork.IsMasterClient && PhotonNetwork.PlayerList.Length >= required);
@@ -147,7 +153,7 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
 
     public void UpdateAllPlayersStates()
     {
-        playerListCache.ForEach(x => { if(x != null) x.UpdateState(); });
+        playerListCache.ForEach(x => { if (x != null) x.UpdateState(); });
     }
 
     public void SetLocalReady()

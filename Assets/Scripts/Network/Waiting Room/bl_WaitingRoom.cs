@@ -13,7 +13,7 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
     static readonly RaiseEventOptions EventsAll = new RaiseEventOptions();
     public bool isLocalReady { get; set; }
 
-    void Awake()
+    private void Awake()
     {
         readyPlayers.Clear();
         PhotonNetwork.AddCallbackTarget(this);
@@ -21,7 +21,7 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         PhotonNetwork.NetworkingClient.EventReceived += OnEventCustom;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
         PhotonNetwork.NetworkingClient.EventReceived -= OnEventCustom;
@@ -69,7 +69,7 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         PhotonNetwork.RaiseEvent(PropertiesKeys.WaitingPlayerReadyEvent, table, EventsAll, SendOptions.SendReliable);
     }
 
-    void OnReceivePlayerState(HashTable data)
+    private void OnReceivePlayerState(HashTable data)
     {
         if (!data.ContainsKey(PropertiesKeys.WaitingState)) return;
 
@@ -113,7 +113,7 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         //We don't need use a RPC cuz all player will receive a callback on OnRoomPropertiesUpdate and we can work with that
     }
 
-    void OnUpdateStates()
+    private void OnUpdateStates()
     {
         bl_WaitingRoomUI.Instance.UpdateAllPlayersStates();
         if (PhotonNetwork.IsMasterClient)
@@ -122,7 +122,7 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         }
     }
 
-    void OnReceiveInitialInfo(HashTable data)
+    private void OnReceiveInitialInfo(HashTable data)
     {
         string source = (string)data[PropertiesKeys.PlayerID];
         int[] split = source.Split(","[0]).Select(x => int.Parse(x)).ToArray();
@@ -195,24 +195,23 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
     }
 
     #region Photon Callbacks
-    public void OnCreatedRoom()
+    public override void OnCreatedRoom()
     {
         Debug.Log("Admin CreatedRoom");
-
     }
 
-    public void OnCreateRoomFailed(short returnCode, string message)
+    public override void OnCreateRoomFailed(short returnCode, string message)
     {
        // errorText.text = "Room Creation Failed: " + message;
         MenuManager.inst.OpenMenu("error");
         // Add Tab Error!
     }
 
-    public void OnFriendListUpdate(List<FriendInfo> friendList)
+    public override void OnFriendListUpdate(List<FriendInfo> friendList)
     {
     }
 
-    public void OnJoinedRoom()
+    public override void OnJoinedRoom()
     {
         if (bl_GameData.Instance.lobbyJoinMethod == LobbyJoinMethod.WaitingRoom)
         {
@@ -220,15 +219,15 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         }
     }
 
-    public void OnJoinRandomFailed(short returnCode, string message)
+    public override void OnJoinRandomFailed(short returnCode, string message)
     {
     }
 
-    public void OnJoinRoomFailed(short returnCode, string message)
+    public override void OnJoinRoomFailed(short returnCode, string message)
     {
     }
 
-    public void OnLeftRoom()
+    public override void OnLeftRoom()
     {
         bl_WaitingRoomUI.Instance.Hide();
         if (PhotonNetwork.IsConnected)
@@ -242,7 +241,7 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         }
     }
 
-    public void OnPlayerEnteredRoom(Player newPlayer)
+    public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         bl_WaitingRoomUI.Instance.UpdatePlayerCount();
         if (PhotonNetwork.IsMasterClient)
@@ -254,13 +253,13 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         }
     }
 
-    public void OnPlayerLeftRoom(Player otherPlayer)
+    public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         bl_WaitingRoomUI.Instance.InstancePlayerList();
         if (readyPlayers.Contains(otherPlayer.ActorNumber)) { readyPlayers.Remove(otherPlayer.ActorNumber); }
     }
 
-    public void OnRoomPropertiesUpdate(HashTable propertiesThatChanged)
+    public override void OnRoomPropertiesUpdate(HashTable propertiesThatChanged)
     {
         //if the wait state has change
         if (propertiesThatChanged.ContainsKey(PropertiesKeys.WaitingState))
@@ -293,12 +292,12 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
         }
     }
 
-    public void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
         bl_WaitingRoomUI.Instance.InstancePlayerList();
     }
 
-    public void OnMasterClientSwitched(Player newMasterClient)
+    public override void OnMasterClientSwitched(Player newMasterClient)
     {
         bl_WaitingRoomUI.Instance.UpdateRoomInfoUI();
     }

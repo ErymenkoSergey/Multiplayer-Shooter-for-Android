@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class bl_PhotonHelper : MonoBehaviourPun {
-
+public class bl_PhotonHelper : MonoBehaviourPunCallbacks
+{
     protected GameMode mGameMode = GameMode.FFA;
     private List<Player> PlayerList = new List<Player>();
     private bool GameModeDownloaded = false;

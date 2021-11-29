@@ -68,10 +68,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         bl_LobbyUI.Instance.InitialSetup();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    void SetupPhotonSettings()
+    private void SetupPhotonSettings()
     {
         PhotonNetwork.AddCallbackTarget(this);
         PhotonNetwork.UseRpcMonoBehaviourCache = true;
@@ -199,8 +196,6 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
 
     IEnumerator AutoMatchIE()
     {
-        Debug.Log("AuoMatch IENMEr");
-        //active the search match UI
         bl_LobbyUI.Instance.SeekingMatchUI.SetActive(true);
         yield return new WaitForSeconds(GameMeaning.AUTOMATCHTIMER);
         PhotonNetwork.JoinRandomRoom();
@@ -211,7 +206,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
     /// <summary>
     /// When there is not rooms to join (when matchmaking)
     /// </summary>
-    public void OnNoRoomsToJoin(short returnCode, string message)
+    public void OnNoRoomsToJoin(short returnCode, string message) 
     {
         Debug.Log("No games to join found on matchmaking, creating one.");
         //create random room properties
@@ -582,7 +577,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
 
     #region Photon Callbacks
 
-    public void OnConnected()
+    public override void OnConnected()
     {
         FirstConnectionMade = true;
         if (PhotonNetwork.PhotonServerSettings.AppSettings.UseNameServer)
@@ -595,12 +590,26 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         }
     }
 
-    public void OnConnectedToMaster()
+
+    public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
-    public void OnDisconnected(DisconnectCause cause)
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        //SoundManager.inst.PlayButton();
+        bl_LobbyUI.Instance.startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        //errorText.text = "Room Creation Failed: " + message;
+        //MenuManager.inst.OpenMenu("error");
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
     {
         if (cause == DisconnectCause.DisconnectByClientLogic)
         {
@@ -636,18 +645,18 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         }
     }
 
-    public void OnRoomListUpdate(List<RoomInfo> roomList)
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         Debug.Log("Room list updated, total rooms: " + roomList.Count);
         ServerList(roomList);
     }
 
-    public void OnRegionListReceived(RegionHandler regionHandler)
+    public override void OnRegionListReceived(RegionHandler regionHandler)
     {
 
     }
 
-    public void OnJoinedLobby()
+    public override void OnJoinedLobby()
     {
         Debug.Log($"Player <b>{PhotonNetwork.LocalPlayer.UserId}</b> joined to the lobby");
         bl_LobbyUI.Instance.Home();
@@ -666,7 +675,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         PhotonNetwork.IsMessageQueueRunning = true; 
     }
 
-    public void OnJoinedRoom()
+    public override void OnJoinedRoom()
     {
         //if (bl_GameData.Instance.lobbyJoinMethod == LobbyJoinMethod.DirectToMap)
         //{
@@ -678,65 +687,51 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         //    SetLobbyChat(false);
         //}
 
-        SoundManager.inst.PlayButton();
+        //SoundManager.inst.PlayButton();
 
-        bl_LobbyUI.Instance.roomNameText.text = PhotonNetwork.CurrentRoom.Name;
-
-        Player[] players = PhotonNetwork.PlayerList;
-
-        foreach (Transform child in bl_LobbyUI.Instance.playerListContent)
-            Destroy(child.gameObject);
-
-        for (int i = 0; i < players.Count(); i++)
-            Instantiate(bl_LobbyUI.Instance.PlayerListItemPrefab, bl_LobbyUI.Instance.playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
-
-        bl_LobbyUI.Instance.startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+        bl_LobbyUI.Instance.OnJoinedRoom();
     }
 
-    public void OnPlayerEnteredRoom(Player newPlayer)
+    public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Instantiate(bl_LobbyUI.Instance.PlayerListItemPrefab, bl_LobbyUI.Instance.playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
+        bl_LobbyUI.Instance.OnPlayerEnteredRoom(newPlayer);
     }
 
-    public void OnCustomAuthenticationResponse(Dictionary<string, object> data)
+    public override void OnCustomAuthenticationResponse(Dictionary<string, object> data)
     {
 
     }
 
-    public void OnCustomAuthenticationFailed(string debugMessage)
+    public override void OnCustomAuthenticationFailed(string debugMessage)
     {
     }
 
-    public void OnLobbyStatisticsUpdate(List<TypedLobbyInfo> lobbyStatistics)
+    public override void OnLobbyStatisticsUpdate(List<TypedLobbyInfo> lobbyStatistics)
     {
     }
 
-    public void OnLeftLobby()
+    public override void OnLeftLobby()
     {
     }
 
-    public void OnFriendListUpdate(List<FriendInfo> friendList)
+    public override void OnFriendListUpdate(List<FriendInfo> friendList)
     {
     }
 
-    public void OnCreatedRoom()
+    public override void OnCreatedRoom()
     {
     }
 
-    public void OnCreateRoomFailed(short returnCode, string message)
+    public override void OnJoinRoomFailed(short returnCode, string message)
     {
     }
 
-    public void OnJoinRoomFailed(short returnCode, string message)
-    {
-    }
-
-    public void OnJoinRandomFailed(short returnCode, string message)
+    public override void OnJoinRandomFailed(short returnCode, string message)
     {
         OnNoRoomsToJoin(returnCode, message);
     }
 
-    public void OnLeftRoom()
+    public override void OnLeftRoom()
     {
     }
     #endregion

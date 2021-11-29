@@ -2552,30 +2552,30 @@ namespace Photon.Realtime
         /// <remarks>This method is not responsible to keep up the state of a LoadBalancingClient. Calling base.DebugReturn on overrides is optional.</remarks>
         public virtual void DebugReturn(DebugLevel level, string message)
         {
-            if (this.LoadBalancingPeer.DebugOut != DebugLevel.ALL && level > this.LoadBalancingPeer.DebugOut)
-            {
-                return;
-            }
-            #if !SUPPORTED_UNITY
-            Debug.WriteLine(message);
-            #else
-            if (level == DebugLevel.ERROR)
-            {
-                Debug.LogError(message);
-            }
-            else if (level == DebugLevel.WARNING)
-            {
-                Debug.LogWarning(message);
-            }
-            else if (level == DebugLevel.INFO)
-            {
-                Debug.Log(message);
-            }
-            else if (level == DebugLevel.ALL)
-            {
-                Debug.Log(message);
-            }
-            #endif
+            //if (this.LoadBalancingPeer.DebugOut != DebugLevel.ALL && level > this.LoadBalancingPeer.DebugOut)
+            //{
+            //    return;
+            //}
+            //#if !SUPPORTED_UNITY
+            //Debug.WriteLine(message);
+            //#else
+            //if (level == DebugLevel.ERROR)
+            //{
+            //    Debug.LogError(message);
+            //}
+            //else if (level == DebugLevel.WARNING)
+            //{
+            //    Debug.LogWarning(message);
+            //}
+            //else if (level == DebugLevel.INFO)
+            //{
+            //    Debug.Log(message);
+            //}
+            //else if (level == DebugLevel.ALL)
+            //{
+            //    Debug.Log(message);
+            //}
+            //#endif
         }
 
         private void CallbackRoomEnterFailed(OperationResponse operationResponse)
