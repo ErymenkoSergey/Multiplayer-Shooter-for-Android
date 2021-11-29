@@ -51,6 +51,12 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         bl_LobbyUI.Instance.blackScreenFader.FadeOut(0.5f);
     }
 
+    internal void HidePanel()
+    {
+        Content.SetActive(false);
+        Debug.Log("Admin create boool 0 " + isCreateRoom);
+    }
+
     public void InstancePlayerList()
     {
         playerListCache.ForEach(x => { if (x != null) { Destroy(x.gameObject); } });
@@ -116,6 +122,7 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
 
         if (!isCreateRoom)
         {
+            Debug.Log("Admin create boool 2 " + isCreateRoom);
             MapPreview.sprite = si.Preview;
             MapNameText.text = si.ShowName.ToUpper();
             int t = (int)room.CustomProperties[PropertiesKeys.TimeRoomKey];
@@ -125,12 +132,19 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
             GoalText.text = (string)room.CustomProperties[PropertiesKeys.RoomGoal].ToString() + " " + GetGameModeUpdated.GetModeInfo().GoalName.ToUpper();
 
         }
-        GameModeText.text = mode.GetName().ToUpper();
+        Debug.Log("Admin create boool 3 " + isCreateRoom);
         UpdatePlayerCount();
+        GameModeText.text = mode.GetName().ToUpper();
         readyButtons[0].gameObject.SetActive(PhotonNetwork.IsMasterClient);
         readyButtons[1].gameObject.SetActive(!PhotonNetwork.IsMasterClient);
+        
         readyButtons[1].GetComponentInChildren<Text>().text = bl_WaitingRoom.Instance.isLocalReady ? "CANCEL" : "READY";
-
+        if (isCreateRoom)
+        {
+            HidePanel();
+            Debug.Log("Admin create boool 333 " + isCreateRoom);
+        }
+            
     }
 
     public void UpdatePlayerCount()

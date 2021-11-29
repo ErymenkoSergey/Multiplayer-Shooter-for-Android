@@ -170,11 +170,27 @@ public class bl_LobbyUI : MonoBehaviour
         if (w.MenuButton != null) w.MenuButton.interactable = !active;
     }
 
-    public void Home() { ChangeWindow(MainWindowName); bl_Lobby.Instance.onShowMenu?.Invoke(); }
+    public void Home() 
+    {
+        ChangeWindow(MainWindowName); bl_Lobby.Instance.onShowMenu?.Invoke();
+        Debug.Log("Admin Hd1! ");
+    }
+
     public void HideAll() 
-    { 
-        currentWindow = ""; windows.ForEach(x => { if (x.UIRoot != null) { x.UIRoot.SetActive(false); } }); 
-    }//disable all windows 
+    {
+        if (bl_WaitingRoomUI.Instance.isCreateRoom == true)
+        {
+            currentWindow = " "; 
+            windows.ForEach(x => { if (x.UIRoot != null) { x.UIRoot.SetActive(false); } });
+            Debug.Log("Admin Hde! ");
+            Debug.Log("Admin create boool 11 " + bl_WaitingRoomUI.Instance.isCreateRoom);
+            bl_WaitingRoomUI.Instance.HidePanel();
+        }
+        else
+        {
+            Debug.Log("Admin create boool 111 " + bl_WaitingRoomUI.Instance.isCreateRoom);
+        }
+    }
 
     IEnumerator DoChangeWindow(WindowUI window)
     {
@@ -538,11 +554,13 @@ public class bl_LobbyUI : MonoBehaviour
     private void OpenPanelCreateRoom()
     {
         panelCreateNewMap.SetActive(true);
+        bl_WaitingRoomUI.Instance.isCreateRoom = true;
     }
 
     private void ClousedPanelCreateRoom()
     {
         panelCreateNewMap.SetActive(false);
+        bl_WaitingRoomUI.Instance.isCreateRoom = false;
     }
 
     private void ManiacMode()
