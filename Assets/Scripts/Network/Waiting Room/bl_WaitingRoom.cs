@@ -198,6 +198,7 @@ public class bl_WaitingRoom : bl_PhotonHelper, IMatchmakingCallbacks, IInRoomCal
     public override void OnCreatedRoom()
     {
         Debug.Log("Admin CreatedRoom");
+        Debug.Log("Admin  new game 3 ");
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)

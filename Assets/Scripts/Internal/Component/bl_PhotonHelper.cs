@@ -5,7 +5,7 @@ using Photon.Realtime;
 
 public class bl_PhotonHelper : MonoBehaviourPunCallbacks
 {
-    protected GameMode mGameMode = GameMode.FFA;
+    protected GameMode mGameMode = GameMode.CTF;
     private List<Player> PlayerList = new List<Player>();
     private bool GameModeDownloaded = false;
 

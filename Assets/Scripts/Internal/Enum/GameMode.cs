@@ -1,7 +1,7 @@
 ﻿public enum GameMode
 {
     TDM,
-    FFA,
+    FFA, // sa
     CTF,
     SND,
     CP,

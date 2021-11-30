@@ -594,13 +594,13 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
-        PhotonNetwork.AutomaticallySyncScene = true;
+        //PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         //SoundManager.inst.PlayButton();
-        bl_LobbyUI.Instance.startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+        //bl_LobbyUI.Instance.startGameButton.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -688,7 +688,7 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
         //}
 
         //SoundManager.inst.PlayButton();
-
+        Debug.Log("Admin  new game 2 ");
         bl_LobbyUI.Instance.OnJoinedRoom();
     }
 

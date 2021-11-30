@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GameData
   m_EditorClassIdentifier: 
   offlineMode: 0
-  UseLobbyChat: 0
-  UseVoiceChat: 0
+  UseLobbyChat: 1
+  UseVoiceChat: 1
   BulletTracer: 1
   DropGunOnDeath: 1
   SelfGrenadeDamage: 1
@@ -67,6 +67,10 @@ MonoBehaviour:
     m_Scene: {fileID: 102900000, guid: 7b433244bb0354246a7c6a8c682e5441, type: 3}
     RealSceneName: ExampleLevel
     Preview: {fileID: 21300000, guid: 6566c02619a33c04b83af91ef6aa5026, type: 3}
+  - ShowName: Maniac Mode
+    m_Scene: {fileID: 102900000, guid: 0d48c7b688f198341a180edadb83f89a, type: 3}
+    RealSceneName: ManiacMode_01
+    Preview: {fileID: 21300000, guid: 9986ac8e5303c1f4fb425a9eb47eef41, type: 3}
   AllWeapons:
   - Name: Rifle
     Type: 1

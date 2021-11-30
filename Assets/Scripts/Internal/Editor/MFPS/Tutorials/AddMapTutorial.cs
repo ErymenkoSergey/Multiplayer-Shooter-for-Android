@@ -25,7 +25,7 @@ public class AddMapTutorial : TutorialWizard
         new NetworkImages{Name = "img-12.jpg", Image = null},
     };
     private Steps[] AllSteps = new Steps[] {
-     new Steps { Name = "Get Started", StepsLenght = 0 },
+    new Steps { Name = "Get Started", StepsLenght = 0 },
     new Steps { Name = "Set Up Scene", StepsLenght = 6 },
     new Steps { Name = "Tips", StepsLenght = 0 },
     };
@@ -94,13 +94,14 @@ public class AddMapTutorial : TutorialWizard
             DownArrow();
             DrawText("Ok, so now lets open the new map scene, <B>drag your scene in the field below</b>");
             GUILayout.BeginHorizontal();
-            GUILayout.Label("SCENE: ", GUILayout.Width(100));
+            GUILayout.Label("SCENE: ManiacMode_01 ", GUILayout.Width(100));
             m_SceneReference = EditorGUILayout.ObjectField(m_SceneReference, typeof(SceneAsset), false) as SceneAsset;
             GUILayout.EndHorizontal();
             GUI.enabled = m_SceneReference != null;
             Space(5);
             if (DrawButton("CONTINUE"))
             {
+                //if (EditorSceneManager.GetActiveScene().name == m_SceneReference.name)
                 if (EditorSceneManager.GetActiveScene().name == m_SceneReference.name)
                 {
                     NextStep();

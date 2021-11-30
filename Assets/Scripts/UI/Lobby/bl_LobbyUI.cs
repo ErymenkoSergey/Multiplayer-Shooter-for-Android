@@ -597,11 +597,13 @@ public class bl_LobbyUI : MonoBehaviour
     {
         if (string.IsNullOrEmpty(roomNameInputField.text))
             return;
-
+        Debug.Log("Admin  new game 1 ");
         PhotonNetwork.CreateRoom(roomNameInputField.text);
        // bl_Lobby.Instance.OnJoinedRoom();
-        roomMenuPanel.SetActive(true); 
+        roomMenuPanel.SetActive(true);
         //SoundManager.inst.PlayButton();
+
+        
     }
 
     private void ClousedRoomMenuPanel()
@@ -632,6 +634,7 @@ public class bl_LobbyUI : MonoBehaviour
 
     internal void OnJoinedRoom()
     {
+        Debug.Log("Admin  new game 4 ");
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
 
         Player[] players = PhotonNetwork.PlayerList;
