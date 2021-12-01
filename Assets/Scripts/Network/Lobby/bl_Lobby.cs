@@ -677,19 +677,20 @@ public class bl_Lobby : bl_PhotonHelper, IConnectionCallbacks, ILobbyCallbacks, 
 
     public override void OnJoinedRoom()
     {
-        //if (bl_GameData.Instance.lobbyJoinMethod == LobbyJoinMethod.DirectToMap)
-        //{
-        //    Debug.Log($"Local client joined to the room '{PhotonNetwork.CurrentRoom.Name}'");
-        //    StartCoroutine(MoveToGameScene());
-        //}
-        //else
-        //{
-        //    SetLobbyChat(false);
-        //}
+        if (bl_GameData.Instance.lobbyJoinMethod == LobbyJoinMethod.DirectToMap)
+        {
+            Debug.Log($"Local client joined to the room '{PhotonNetwork.CurrentRoom.Name}'");
+            StartCoroutine(MoveToGameScene());
+            Debug.Log("Create room s");
+        }
+        else
+        {
+            SetLobbyChat(false);
+        }
 
         //SoundManager.inst.PlayButton();
-        Debug.Log("Admin  new game 2 ");
-        bl_LobbyUI.Instance.OnJoinedRoom();
+        //Debug.Log("Admin  new game 2 ");
+        //bl_LobbyUI.Instance.OnJoinedRoom();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)

@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using MFPSEditor;
 
 public class AddPlayerTutorial : TutorialWizard
 {
-
-    //required//////////////////////////////////////////////////////
+    //required
     private const string ImagesFolder = "mfps2/editor/player/";
+
     private NetworkImages[] ServerImages = new NetworkImages[]
     {
         new NetworkImages{Name = "img-1.jpg", Image = null},
@@ -22,13 +20,15 @@ public class AddPlayerTutorial : TutorialWizard
         new NetworkImages{Name = "img-8.jpg", Image = null},
         new NetworkImages{Name = "https://www.lovattostudio.com/en/wp-content/uploads/2017/03/player-selector-product-cover-925x484.png",Type = NetworkImages.ImageType.Custom},
     };
-    private Steps[] AllSteps = new Steps[] {
-     new Steps { Name = "3DModel", StepsLenght = 0 },
+
+    private Steps[] AllSteps = new Steps[] 
+    {
+    new Steps { Name = "3DModel", StepsLenght = 0 },
     new Steps { Name = "Ragdolled", StepsLenght = 3 },
     new Steps { Name = "Player Prefab", StepsLenght = 6 },
     };
-    //final required////////////////////////////////////////////////
 
+    //final required
     private GameObject PlayerInstantiated;
     private GameObject PlayerModel;
     private Animator PlayerAnimator;
@@ -72,7 +72,7 @@ public class AddPlayerTutorial : TutorialWizard
         }
     }
 
-    void DrawModelInfo()
+    private void DrawModelInfo()
     {
         DrawText("This tutorial will guide you step by step to replace the Player Model of the player prefabs, what you need is:");
         DrawHorizontalColumn("Player Model", "A Humanoid <b>Rigged</b> 3D Model with the standard rigged bones or any rigged that work with the unity re-targeting animator system.");

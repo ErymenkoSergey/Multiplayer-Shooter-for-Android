@@ -178,18 +178,18 @@ public class bl_LobbyUI : MonoBehaviour
 
     public void HideAll() 
     {
-        if (bl_WaitingRoomUI.Instance.isCreateRoom == true)
-        {
+        //if (bl_WaitingRoomUI.Instance.isCreateRoom == true)
+        //{
             currentWindow = " "; 
             windows.ForEach(x => { if (x.UIRoot != null) { x.UIRoot.SetActive(false); } });
             Debug.Log("Admin Hde! ");
-            Debug.Log("Admin create boool 11 " + bl_WaitingRoomUI.Instance.isCreateRoom);
-            bl_WaitingRoomUI.Instance.HidePanel();
-        }
-        else
-        {
-            Debug.Log("Admin create boool 111 " + bl_WaitingRoomUI.Instance.isCreateRoom);
-        }
+            //Debug.Log("Admin create boool 11 " + bl_WaitingRoomUI.Instance.isCreateRoom);
+            //bl_WaitingRoomUI.Instance.HidePanel();
+        //}
+        //else
+        //{
+        //    Debug.Log("Admin create boool 111 " + bl_WaitingRoomUI.Instance.isCreateRoom);
+        //}
     }
 
     IEnumerator DoChangeWindow(WindowUI window)
@@ -478,7 +478,8 @@ public class bl_LobbyUI : MonoBehaviour
     [SerializeField]
     Button newGame, clousedPanelNewGame, quitGame, autoMatch, openPanelCreateRoom,
         clousedPanelCreateRoom, maniacMode, battleRoyaleMode, customMap, createRoom,
-        singlePlayerGame, openPanelFindMap, clousedPanelFindMap, backCreateRoom, clousedRoomMenuPanel
+        singlePlayerGame, openPanelFindMap, clousedPanelFindMap, backCreateRoom,
+        clousedRoomMenuPanel
         ;
 
     private void Start()
@@ -553,14 +554,16 @@ public class bl_LobbyUI : MonoBehaviour
 
     private void OpenPanelCreateRoom()
     {
-        panelCreateNewMap.SetActive(true);
-        bl_WaitingRoomUI.Instance.isCreateRoom = true;
+        bl_Lobby.Instance.CreateRoom();
+        //panelCreateNewMap.SetActive(true);
+
+        //bl_WaitingRoomUI.Instance.isCreateRoom = true;
     }
 
     private void ClousedPanelCreateRoom()
     {
         panelCreateNewMap.SetActive(false);
-        bl_WaitingRoomUI.Instance.isCreateRoom = false;
+        //bl_WaitingRoomUI.Instance.isCreateRoom = false;
     }
 
     private void ManiacMode()
@@ -595,12 +598,12 @@ public class bl_LobbyUI : MonoBehaviour
 
     private void CreateRoomGame()
     {
-        if (string.IsNullOrEmpty(roomNameInputField.text))
-            return;
-        Debug.Log("Admin  new game 1 ");
-        PhotonNetwork.CreateRoom(roomNameInputField.text);
-       // bl_Lobby.Instance.OnJoinedRoom();
-        roomMenuPanel.SetActive(true);
+        //if (string.IsNullOrEmpty(roomNameInputField.text))
+        //    return;
+        //Debug.Log("Admin  new game 1 ");
+        //PhotonNetwork.CreateRoom(roomNameInputField.text);
+        bl_Lobby.Instance.OnJoinedRoom();
+        //roomMenuPanel.SetActive(true);
         //SoundManager.inst.PlayButton();
 
         

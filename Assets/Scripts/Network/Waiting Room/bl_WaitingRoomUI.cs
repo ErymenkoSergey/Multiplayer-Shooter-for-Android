@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
-//using System.Linq;
 
 public class bl_WaitingRoomUI : bl_PhotonHelper
 {
@@ -51,11 +49,11 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         bl_LobbyUI.Instance.blackScreenFader.FadeOut(0.5f);
     }
 
-    internal void HidePanel()
-    {
-        Content.SetActive(false);
-        Debug.Log("Admin create boool 0 " + isCreateRoom);
-    }
+    //internal void HidePanel()
+    //{
+    //    Content.SetActive(false);
+    //    //Debug.Log("Admin create boool 0 " + isCreateRoom);
+    //}
 
     public void InstancePlayerList()
     {
@@ -111,7 +109,7 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         playerListCache.Add(wp);
     }
 
-    internal bool isCreateRoom;
+    //internal bool isCreateRoom;
     public void UpdateRoomInfoUI()
     {
         GameMode mode = GetGameModeUpdated;
@@ -120,9 +118,9 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
         string mapName = (string)room.CustomProperties[PropertiesKeys.SceneNameKey];
         bl_GameData.SceneInfo si = bl_GameData.Instance.AllScenes.Find(x => x.RealSceneName == mapName);
 
-        if (!isCreateRoom)
-        {
-            Debug.Log("Admin create boool 2 " + isCreateRoom);
+        //if (!isCreateRoom)
+        //{
+            //Debug.Log("Admin create boool 2 " + isCreateRoom);
             MapPreview.sprite = si.Preview;
             MapNameText.text = si.ShowName.ToUpper();
             int t = (int)room.CustomProperties[PropertiesKeys.TimeRoomKey];
@@ -131,19 +129,19 @@ public class bl_WaitingRoomUI : bl_PhotonHelper
             FriendlyFireText.text = string.Format("FRIENDLY FIRE: {0}", (bool)room.CustomProperties[PropertiesKeys.RoomFriendlyFire] ? "ON" : "OFF");
             GoalText.text = (string)room.CustomProperties[PropertiesKeys.RoomGoal].ToString() + " " + GetGameModeUpdated.GetModeInfo().GoalName.ToUpper();
 
-        }
-        Debug.Log("Admin create boool 3 " + isCreateRoom);
+        //}
+       // Debug.Log("Admin create boool 3 " + isCreateRoom);
         UpdatePlayerCount();
         GameModeText.text = mode.GetName().ToUpper();
         readyButtons[0].gameObject.SetActive(PhotonNetwork.IsMasterClient);
         readyButtons[1].gameObject.SetActive(!PhotonNetwork.IsMasterClient);
         
         readyButtons[1].GetComponentInChildren<Text>().text = bl_WaitingRoom.Instance.isLocalReady ? "CANCEL" : "READY";
-        if (isCreateRoom)
-        {
-            HidePanel();
-            Debug.Log("Admin create boool 333 " + isCreateRoom);
-        }
+        //if (isCreateRoom)
+        //{
+        //    HidePanel();
+        //    Debug.Log("Admin create boool 333 " + isCreateRoom);
+        //}
             
     }
 
